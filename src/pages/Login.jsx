@@ -9,10 +9,16 @@ export default function Login() {
 
     const handleLogin = (event) => {
         event.preventDefault();
-
+    
+        // Retrieve stored user data from local storage
+        const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    
         // Simple validation logic
-        const isValidLogin = username === "testuser" && password === "password";
-
+        const isValidLogin =
+            storedUserData &&
+            storedUserData.username === username &&
+            storedUserData.password === password;
+    
         if (isValidLogin) {
             console.log('Navigating to /home');
             navigate('/home');
@@ -20,6 +26,7 @@ export default function Login() {
             alert("Invalid login credentials");
         }
     };
+    
 
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>

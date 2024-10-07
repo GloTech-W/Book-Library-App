@@ -12,25 +12,27 @@ const SignUp = () => {
 
     const handleSignUp = (e) => {
         e.preventDefault();
-
+    
         // Basic validation for empty fields
         if (!username || !email || !password || !confirmPassword) {
             setError('All fields are required.');
             return;
         }
-
+    
         // Password match validation
         if (password !== confirmPassword) {
             setError('Passwords do not match.');
             return;
         }
-
-        // Simulate sign-up success (you could call an API here)
-        console.log('User signed up:', { username, email, password });
-
+    
+        // Save user data to local storage
+        const userData = { username, password }; // You can also save email if needed
+        localStorage.setItem('userData', JSON.stringify(userData));
+    
         // After successful sign-up, navigate to the login page
         navigate('/');
     };
+    
 
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
