@@ -6,7 +6,7 @@ import {
   FaLocationArrow,
   FaMobileAlt,
 } from "react-icons/fa";
-import footerLogo from "../../assets/website/logo.png";
+import Logo from "../../assets/website/logo.png";
 
 const FooterLinks = [
   {
@@ -31,7 +31,7 @@ const Footer = () => {
           {/* Company Details */}
           <div className="py-8 px-4">
             <h1 className="sm:text-3xl text-xl font-bold sm:text-left text-justify mb-3 flex items-center gap-3">
-              <img src={footerLogo} alt="Logo" className="max-w-[50px]" />
+              <img src={Logo} alt="Logo" className="max-w-[50px]" />
               ReadShelf
             </h1>
             <p className="">
