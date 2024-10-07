@@ -1,7 +1,7 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom"; // Renamed Link to avoid conflict with react-scroll
 import { Link as ScrollLink } from "react-scroll"; // Import react-scroll for smooth scrolling
-import Logo from "../../assets/website/logo.png";
+import Logo from "../../assets/Website/logo.png";
 import UserIcon from "../../assets/website/user.png"; 
 import DarkMode from "./DarkMode";
 import { FaCaretDown } from "react-icons/fa"; 
