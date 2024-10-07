@@ -104,7 +104,7 @@ const Navbar = ({ handlereadNowPopup }) => {
                 <div className="flex items-center gap-2">
                   <img
                     src={UserIcon}
-                    alt="User"
+                    alt="UserIcon"
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
