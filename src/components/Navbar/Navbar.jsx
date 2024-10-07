@@ -2,7 +2,6 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom"; // Renamed Link to avoid conflict with react-scroll
 import { Link as ScrollLink } from "react-scroll"; // Import react-scroll for smooth scrolling
 import LibImage from "../../assets/Website/lib.png";
-import UserIcon from "../../assets/website/user.png"; 
 import DarkMode from "./DarkMode";
 import { FaCaretDown } from "react-icons/fa"; 
 
@@ -103,8 +102,8 @@ const Navbar = ({ handlereadNowPopup }) => {
               <li className="group relative cursor-pointer">
                 <div className="flex items-center gap-2">
                   <img
-                    src={UserIcon}
-                    alt="UserIcon"
+                    src={LibImage}
+                    alt="LibImage"
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
