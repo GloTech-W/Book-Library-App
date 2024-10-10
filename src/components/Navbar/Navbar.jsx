@@ -2,9 +2,10 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom"; // Renamed Link to avoid conflict with react-scroll
 import { Link as ScrollLink } from "react-scroll"; // Import react-scroll for smooth scrolling
 import Logo from "../../assets/Website/logo.png";
-import UserIcon from "../../assets/Website/user.png"
+import UserIcon from "../../assets/Website/user.png";
 import DarkMode from "./DarkMode";
 import { FaCaretDown } from "react-icons/fa"; 
+import ReadNowPopup from "../Read Now/Read Now"; // Assuming this is still needed
 
 const Menu = [
   {
@@ -29,7 +30,7 @@ const DropdownLinks = [
     link: "/explore",
   },
   {
-    name: "Reading Lists",
+    name: "Reading Lists", // Keep this if you want a placeholder for now
     link: "/#",
   },
 ];
@@ -46,9 +47,7 @@ const Navbar = ({ handlereadNowPopup }) => {
             </RouterLink>
           </div>
           <div className="flex justify-between items-center gap-5">
-            <div>
-              <DarkMode />
-            </div>
+            <DarkMode />
             <ul className="hidden sm:flex items-center gap-4">
               {Menu.map((menu) => (
                 <li key={menu.id} className="flex items-center">
@@ -76,12 +75,11 @@ const Navbar = ({ handlereadNowPopup }) => {
                     {DropdownLinks.map((data) => (
                       <li key={data.name}>
                         {data.scrollTo ? (
-                          // Use ScrollLink for smooth scrolling
                           <ScrollLink
                             to={data.scrollTo}
                             smooth={true}
                             duration={500}
-                            offset={-70} // Adjust to ensure proper positioning
+                            offset={-70}
                             className="inline-block w-full rounded-md p-2 hover:bg-primary/20 cursor-pointer"
                           >
                             {data.name}
@@ -111,7 +109,7 @@ const Navbar = ({ handlereadNowPopup }) => {
                 </div>
                 <div className="absolute right-0 z-[9999] hidden w-[150px] rounded-md bg-white p-2 text-black group-hover:block">
                   <ul className="space-y-3">
-                    {/* Add user-specific dropdown links */}
+                    {/* Add user-specific dropdown links here */}
                   </ul>
                 </div>
               </li>
