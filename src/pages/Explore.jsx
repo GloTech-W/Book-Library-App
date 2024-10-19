@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+import React, { useState } from "react"; // Import necessary hooks and React
+import { Link } from "react-router-dom"; // Import Link for navigation
+import { FaSearch } from "react-icons/fa"; // Import search icon
 
+// Import genre images
 import fantasyImage from "../assets/ExploreImages/Fantasy.png";
 import historicalFictionImage from "../assets/ExploreImages/Historical Fiction.png";
 import horrorImage from "../assets/ExploreImages/Horror.png";
@@ -17,6 +18,7 @@ import shortStoriesImage from "../assets/ExploreImages/Short Stories.png";
 import thrillerImage from "../assets/ExploreImages/Thriller.png";
 import youngAdultImage from "../assets/ExploreImages/Young Adult.png";
 
+// Array of genre objects with title, link, and image
 const genres = [
   { title: "Fantasy", link: "/books/fantasy", image: fantasyImage },
   { title: "Historical Fiction", link: "/books/historicalfiction", image: historicalFictionImage },
@@ -34,83 +36,94 @@ const genres = [
   { title: "Young Adult", link: "/books/youngadult", image: youngAdultImage },
 ];
 
-
+// Function to truncate long text to a maximum length
 const truncateText = (text, maxLength) => {
   if (!text) return "";
   return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 };
 
+// Main Explore component
 const Explore = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [notFound, setNotFound] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [showMore, setShowMore] = useState(false);
+  // State hooks for search, results, loading, and popup handling
+  const [searchTerm, setSearchTerm] = useState(""); // Holds the search term
+  const [results, setResults] = useState([]); // Holds search results
+  const [loading, setLoading] = useState(false); // Indicates if data is loading
+  const [notFound, setNotFound] = useState(false); // Indicates if no books were found
+  const [selectedBook, setSelectedBook] = useState(null); // Holds the selected book for popup
+  const [isPopupVisible, setIsPopupVisible] = useState(false); // Controls the visibility of the book details popup
+  const [showMore, setShowMore] = useState(false); // Controls whether more search results are shown
 
+  // Function to handle search and fetch data from Google Books API
   const handleSearch = async () => {
-    if (searchTerm.trim() === "") return;
+    if (searchTerm.trim() === "") return; // Do nothing if search term is empty
 
-    setLoading(true);
-    setNotFound(false);
-    setShowMore(false);
+    setLoading(true); // Set loading state
+    setNotFound(false); // Reset not found state
+    setShowMore(false); // Reset "show more" state
     try {
-      const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(searchTerm)}`);
+      const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchTerm)}&maxResults=10`);
       const data = await response.json();
-      if (data.docs.length === 0) {
-        setNotFound(true);
+      if (data.items && data.items.length === 0) {
+        setNotFound(true); // No results found
       } else {
-        setResults(data.docs);
+        setResults(data.items); // Update results with data
       }
     } catch (error) {
-      console.error("Error fetching data from Open Library:", error);
+      console.error("Error fetching data from Google Books API:", error); // Log any errors
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading
     }
   };
 
+  // Handle when a book is clicked to show detailed popup
   const handleBookClick = (book) => {
-    setSelectedBook(book);
-    setIsPopupVisible(true);
+    setSelectedBook(book); // Set selected book
+    setIsPopupVisible(true); // Show popup
   };
 
+  // Close the popup
   const closePopup = () => {
-    setIsPopupVisible(false);
-    setSelectedBook(null);
+    setIsPopupVisible(false); // Hide popup
+    setSelectedBook(null); // Clear selected book
   };
 
+  // Show a limited number of results initially, with an option to show more
   const displayedResults = showMore ? results : results.slice(0, 5);
 
   return (
     <div className="container mx-auto p-4 bg-gray-800 text-white min-h-screen">
+      {/* Search input with search button */}
       <div className="mb-4 flex items-center border border-gray-300 rounded-lg overflow-hidden w-full max-w-lg mx-auto">
         <input
           type="text"
           placeholder="Search for a book..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              handleSearch();
+              handleSearch(); // Trigger search on Enter key press
             }
           }}
           className="flex-1 p-2 outline-none bg bg-gray-900 text-white"
           style={{ width: '200px' }}
         />
         <button onClick={handleSearch} className="bg-blue-500 text-white p-2">
-          <FaSearch />
+          <FaSearch /> {/* Search icon */}
         </button>
       </div>
 
+      {/* Message when no results are found */}
       {notFound && (
         <p className="text-red-600 text-center mb-4">No books found. Try another search term.</p>
       )}
 
+      {/* Loading message */}
       {loading && <p className="text-center">Loading...</p>}
 
+      {/* Heading for genres */}
       <h1 className="text-2xl font-bold mb-4 text-blue-600 text-center">Search Genres</h1>
 
+      {/* Genre grid */}
       <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ${results.length === 0 ? 'h-full' : 'h-1/3'}`}>
         {genres.map((genre, index) => (
           <Link to={genre.link} key={index} className="block">
@@ -122,80 +135,74 @@ const Explore = () => {
         ))}
       </div>
 
+      {/* Search results section */}
       {displayedResults.length > 0 && (
         <div className="mt-4">
           <h2 className="text-xl font-semibold text-center">Search Results:</h2>
           <div className="flex overflow-x-auto space-x-4 mt-2">
+            {/* Display search results */}
             {displayedResults.map((book) => (
               <div
-                key={book.key}
+                key={book.id}
                 className="border rounded-lg p-2 cursor-pointer hover:bg-gray-600 min-w-[150px]"
-                onClick={() => handleBookClick(book)}
+                onClick={() => handleBookClick(book)} // Show book details popup on click
               >
-                <img
-                  src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
-                  alt={book.title}
-                  className="w-full h-48 object-cover rounded-md"
-                />
-                <h3 className="mt-2 text-lg font-semibold">{truncateText(book.title, 30)}</h3>
-                {book.author_name && (
-                  <p className="text-sm text-gray-300">{truncateText(book.author_name.join(", "), 20)}</p>
+                {book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail && (
+                  <img
+                    src={book.volumeInfo.imageLinks.thumbnail}
+                    alt={book.volumeInfo.title}
+                    className="w-full h-48 object-cover rounded-md"
+                  />
                 )}
-                {book.publisher && (
-                  <p className="text-sm text-gray-300">{truncateText(book.publisher.join(", "), 20)}</p>
+                <h3 className="mt-2 text-lg font-semibold">{truncateText(book.volumeInfo.title, 30)}</h3>
+                {book.volumeInfo.authors && (
+                  <p className="text-sm text-gray-300">{truncateText(book.volumeInfo.authors.join(", "), 20)}</p>
+                )}
+                {book.volumeInfo.publisher && (
+                  <p className="text-sm text-gray-300">{truncateText(book.volumeInfo.publisher, 20)}</p>
                 )}
               </div>
             ))}
           </div>
+          {/* Button to show more results */}
           {!showMore && results.length > 5 && (
             <button
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
               onClick={() => setShowMore(true)}
+              className="mt-4 bg-blue-500 text-white p-2 rounded-md"
             >
-              View More
+              Show More
             </button>
           )}
         </div>
       )}
 
+      {/* Book detail popup */}
       {isPopupVisible && selectedBook && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-lg">
+          <div className="bg-white p-4 rounded-lg text-black">
+            <h2 className="text-xl font-bold mb-2">{selectedBook.volumeInfo.title}</h2>
+            {selectedBook.volumeInfo.imageLinks && (
+              <img
+                src={selectedBook.volumeInfo.imageLinks.thumbnail}
+                alt={selectedBook.volumeInfo.title}
+                className="mb-2"
+              />
+            )}
+            {selectedBook.volumeInfo.authors && (
+              <p><strong>Authors:</strong> {selectedBook.volumeInfo.authors.join(", ")}</p>
+            )}
+            {selectedBook.volumeInfo.publisher && (
+              <p><strong>Publisher:</strong> {selectedBook.volumeInfo.publisher}</p>
+            )}
+            {selectedBook.volumeInfo.description && (
+              <p><strong>Description:</strong> {truncateText(selectedBook.volumeInfo.description, 100)}</p>
+            )}
             <button
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
               onClick={closePopup}
+              className="mt-4 bg-blue-500 text-white p-2 rounded-md"
             >
-              &times;
+              Close
             </button>
-            <img
-              src={`https://covers.openlibrary.org/b/id/${selectedBook.cover_i}-L.jpg`}
-              alt={selectedBook.title}
-              className="w-full h-64 object-cover rounded-md"
-            />
-            <h2 className="text-2xl font-bold mt-4">{truncateText(selectedBook.title, 40)}</h2>
-            <p className="text-sm text-gray-500 mt-2">
-              <strong>Publication Date:</strong> {selectedBook.first_publish_year || "N/A"}
-            </p>
-            <p className="text-sm text-gray-500">
-              <strong>ISBN:</strong> {selectedBook.isbn ? selectedBook.isbn[0] : "N/A"}
-            </p>
-            <p className="text-sm text-gray-500 mt-2">
-              <strong>Description:</strong> {truncateText(selectedBook.description?.value || "", 100) || "No description available."}
-            </p>
-            {selectedBook.number_of_pages ? (
-              <p className="text-sm text-gray-500">
-                <strong>Number of Pages:</strong> {selectedBook.number_of_pages}
-              </p>
-            ) : (
-              <p className="text-sm text-gray-500">
-                <strong>Number of Pages:</strong> N/A
-              </p>
-            )}
-            {selectedBook.subject && (
-              <p className="text-sm text-gray-500">
-                <strong>Subjects:</strong> {truncateText(selectedBook.subject.join(", "), 50)}
-              </p>
-            )}
           </div>
         </div>
       )}
@@ -203,4 +210,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
+export default Explore; // Export the Explore component

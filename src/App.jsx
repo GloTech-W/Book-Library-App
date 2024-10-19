@@ -1,29 +1,27 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar"; // Importing the Navbar component
-import Hero from "./components/Hero/Hero"; // Importing the Hero component
-import Footer from "./components/Footer/Footer"; // Importing the Footer component
-import Subscribe from "./components/Subscribe/Subscribe"; // Importing the Subscribe component
-import Library from "./components/Library/Library"; // Importing the Library component
-import Books from "./components/Books/Books"; // Importing the Books component
-import ReadNowPopup from "./components/ReadNow/ReadNow"; // Importing the ReadNowPopup component
-import CurrentlyReading from "./components/CurrentlyReading/CurrentlyReading"; // Importing the CurrentlyReading component
-import Explore from "./pages/Explore"; // Importing the Explore page component
-import Login from "./pages/Login"; // Importing the Login page component
-import SignUp from "./pages/SignUp"; // Importing the SignUp page component
+import Navbar from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
+import Footer from "./components/Footer/Footer";
+import Subscribe from "./components/Subscribe/Subscribe";
+import Library from "./components/Library/Library";
+import Books from "./components/Books/Books"; 
+import ReadNowPopup from "./components/Read Now/Read Now";
+import CurrentlyReading from "./components/Currently Reading/Currently Reading";
+import Explore from "./pages/Explore"; // Updated import for Explore component
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp"; // Import the new SignUp component
 
 function App() {
-  // State to manage the visibility of the ReadNowPopup
   const [readNowPopup, setReadNowPopup] = useState(false);
 
-  // Function to open the ReadNowPopup
-  const handleReadNowPopup = () => {
+  const handlereadNowPopup = () => {
     setReadNowPopup(true);
   };
 
   return (
     <Router>
-      <div className="App bg-white dark:bg-gray-900"> {/* Main container with light and dark mode support */}
+      <div className="App bg-white dark:bg-gray-900">
         <Routes>
           {/* Default route: Login Page */}
           <Route path="/" element={<Login />} />
@@ -34,28 +32,13 @@ function App() {
           {/* Home route for the homepage layout */}
           <Route path="/home" element={
             <>
-              {/* Navbar for the homepage */}
-              <Navbar handleReadNowPopup={handleReadNowPopup} /> 
-              
-              {/* Hero section of the homepage */}
-              <Hero handleReadNowPopup={handleReadNowPopup} />
-              
-              {/* Library section */}
+              <Navbar handlereadNowPopup={handlereadNowPopup} /> {/* Navbar for the homepage */}
+              <Hero handlereadNowPopup={handlereadNowPopup} />
               <Library />
-              
-              {/* Currently Reading section */}
               <CurrentlyReading />
-              
-              {/* Subscribe section */}
               <Subscribe />
-              
-              {/* Books section included as part of the homepage */}
-              <Books handleReadNowPopup={handleReadNowPopup} />
-              
-              {/* Footer section */}
+              <Books handlereadNowPopup={handlereadNowPopup} /> {/* Include Books component as a section on the homepage */}
               <Footer />
-              
-              {/* Popup for reading now functionality */}
               <ReadNowPopup readNowPopup={readNowPopup} setReadNowPopup={setReadNowPopup} />
             </>
           } />
@@ -63,16 +46,11 @@ function App() {
           {/* Route for Explore Page */}
           <Route path="/explore" element={
             <>
-              {/* Navbar for the Explore page */}
-              <Navbar handleReadNowPopup={handleReadNowPopup} />
-              
-              {/* Explore page content */}
+              <Navbar handlereadNowPopup={handlereadNowPopup} /> {/* Add Navbar to Explore */}
               <Explore />
             </>
           } />
           
-          {/* 404 Route to handle undefined paths */}
-          <Route path="*" element={<h1>404 - Page Not Found</h1>} /> 
         </Routes>
       </div>
     </Router>
